@@ -12,6 +12,11 @@ function getRestrictedDigits(dayOfWeek) {
     return rules[dayOfWeek] || [];
 }
 
+function getAllRules() {
+    return rules;
+}
+
 module.exports = {
-    getRestrictedDigits
+    getRestrictedDigits,
+    getAllRules
 };

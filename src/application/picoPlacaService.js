@@ -1,4 +1,4 @@
-const { getRestrictedDigits } = require("../domain/picoPlacaRules");
+const { getRestrictedDigits, getAllRules } = require("../domain/picoPlacaRules");
 const { isWithinPeakHours } = require("../domain/peakHours");
 const { isHoliday } = require("../domain/holidayCalendar");
 const { getPenalty } = require("../domain/penaltyPolicy");
@@ -56,17 +56,19 @@ function predict(plateNumber, dateStr, time, offenseCount = 0) {
             const hours = Math.floor(diff / 60);
             warning = {
                 message: `Note: Your vehicle will be restricted in ${hours} hour(s), drive with caution.`,
-                color: "yellow"
+                color: "orange"
             };
         }
     }
 
     if (!isRestrictedDay) {
-        const days = Object.keys(require("../domain/picoPlacaRules")).find(
-            d => getRestrictedDigits(d).includes(lastDigit)
-        );
+        const rules = getAllRules();
+
+        const restrictedDays = Object.keys(rules).find(
+            dayName => rules[dayName].includes(lastDigit)
+        )
         warning = {
-            message: `Note: Your vehicle is restricted on ${days}.`,
+            message: `Note: Your vehicle is restricted on ${restrictedDays}.`,
             color: "green"
         };
     }
