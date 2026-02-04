@@ -23,12 +23,19 @@ app.post('/check', (req, res) => {
         parseInt(offenseCount || 0)
     );
 
+    const warningHtml = result.warning 
+    ? `<p style="color:${result.warning.color}; font-weight:bold;">
+    ${result.warning.message}
+    </p>`
+    : '';
+
     res.send(`
     <html>
     <body style="font-family: Arial; background:#f4f4f4; padding:40px;">
       <div style="background:white;padding:20px;border-radius:8px;max-width:400px;margin:auto">
         <h2>Result</h2>
-        <p><strong>Can drive:</strong> ${result.canDrive}</p>
+        ${warningHtml}
+        <p><strong>Status:</strong> ${result.canDrive ? "Allowed to Drive" : "Restricted"}</p>
         <p><strong>Reason:</strong> ${result.message}</p>
         <p><strong>Penalty:</strong> ${result.penalty || "None"}</p>
         <a href="/">Back</a>
