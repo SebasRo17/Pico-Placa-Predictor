@@ -9,8 +9,8 @@ function predict(plateNumber, dateStr, time, offenseCount = 0) {
     const numericPart = plateNumber.replace(/\D/g, '');
     const lastDigit = parseInt(numericPart.slice(-1));
 
-    const date = new Date(dateStr);
-    const day = date
+    const [year, month, dayNum] = dateStr.split('-').map(Number);
+    const day = new Date(year, month - 1, dayNum)
         .toLocaleDateString('en-US', { weekday: 'long' })
         .toLowerCase();
 
@@ -84,7 +84,7 @@ function predict(plateNumber, dateStr, time, offenseCount = 0) {
     
     //debbug before final return
     console.log("Final Decision: " + (!isRestrictedDay || !peakTime ? "Can Drive" : "Restricted"));
-    console.log("warning:", warning);s
+    console.log("warning:", warning);
 
     return {
         canDrive: false,
