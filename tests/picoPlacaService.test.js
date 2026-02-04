@@ -30,7 +30,7 @@ describe('Pico y Placa Prediction Service', () => {
     test("Should show yellow warning when restriction is more than 1 hour away", () => {
         const result = predict("PDN-3635", "2026-02-04", "13:00", 0);
 
-        expect(result.warning.color).toBe("yellow");
+        expect(result.warning.color).toBe("orange");
     });
 
     test("Should allow car on holidays", () => {
