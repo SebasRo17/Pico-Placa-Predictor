@@ -58,6 +58,8 @@ README.md
 * Morning: 06:00 – 09:30
 * Afternoon: 16:00 – 20:00
 
+*These schedules are in accordance with the peak hour and license plate restrictions regulations for the current year.*
+
 ---
 
 ## Installation
