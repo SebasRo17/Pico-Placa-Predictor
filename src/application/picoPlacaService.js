@@ -4,6 +4,8 @@ const { isHoliday } = require("../domain/holidayCalendar");
 const { getPenalty } = require("../domain/penaltyPolicy");
 
 function predict(plateNumber, dateStr, time, offenseCount = 0) {
+    console.log("DEBBBUG");
+    console.log("Plate Number:", plateNumber, "Date:", dateStr, "Time:", time, "Offense Count:", offenseCount);
     const numericPart = plateNumber.replace(/\D/g, '');
     const lastDigit = parseInt(numericPart.slice(-1));
 
@@ -14,6 +16,11 @@ function predict(plateNumber, dateStr, time, offenseCount = 0) {
 
     const currentMinutes = toMinutes(time);
     const peakTime = isWithinPeakHours(time);
+       const restrictedDigits = getRestrictedDigits(day);
+    const isRestrictedDay = restrictedDigits.includes(lastDigit);
+
+    //DEBBBUG after calculations
+    console.log("Last Digit:", lastDigit, "Day:", day, "Current Minutes:", currentMinutes, "Peak Time:", peakTime, "Is Restricted Day:", isRestrictedDay, "Restricted Digits:", restrictedDigits);
 
     if (isHoliday(dateStr)) {
         return {
@@ -24,9 +31,6 @@ function predict(plateNumber, dateStr, time, offenseCount = 0) {
         };
     }
 
-    const restrictedDigits = getRestrictedDigits(day);
-    const isRestrictedDay = restrictedDigits.includes(lastDigit);
-
     const morningStart = 360; // 06:00
     const afternoonStart = 960; // 16:00
 
@@ -34,6 +38,9 @@ function predict(plateNumber, dateStr, time, offenseCount = 0) {
 
     if (currentMinutes < morningStart) nextRestriction = morningStart;
     else if (currentMinutes < afternoonStart) nextRestriction = afternoonStart;
+
+    //Debug before warnings
+    console.log("Next Restriction Time (in minutes):", nextRestriction);
 
     //Warnings
     let warning = null;
@@ -75,6 +82,10 @@ function predict(plateNumber, dateStr, time, offenseCount = 0) {
     }
 
     
+    //debbug before final return
+    console.log("Final Decision: " + (!isRestrictedDay || !peakTime ? "Can Drive" : "Restricted"));
+    console.log("warning:", warning);s
+
     return {
         canDrive: false,
         message: "Your vehicle is restricted by Pico y Placa regulations.",
