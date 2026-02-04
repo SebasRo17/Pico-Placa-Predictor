@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
 
 app.post('/check', (req, res) => {
     const { plateNumber, date, time, offenseCount } = req.body;
+    console.log(req.body);
 
     const result = predict(
         plateNumber,
@@ -23,10 +24,18 @@ app.post('/check', (req, res) => {
     );
 
     res.send(`
-        <h2>result</h2>
-        <pre>${JSON.stringify(result, null, 2)}</pre>
+    <html>
+    <body style="font-family: Arial; background:#f4f4f4; padding:40px;">
+      <div style="background:white;padding:20px;border-radius:8px;max-width:400px;margin:auto">
+        <h2>Result</h2>
+        <p><strong>Can drive:</strong> ${result.canDrive}</p>
+        <p><strong>Reason:</strong> ${result.message}</p>
+        <p><strong>Penalty:</strong> ${result.penalty || "None"}</p>
         <a href="/">Back</a>
-    `);
+      </div>
+    </body>
+    </html>
+  `);
 });
 
 app.listen(PORT, () => {
